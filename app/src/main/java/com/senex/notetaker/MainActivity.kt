@@ -1,8 +1,11 @@
 package com.senex.notetaker
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import com.senex.notetaker.databinding.ActivityMainBinding
+import com.senex.notetaker.notes.NotesFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,5 +16,10 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            add<NotesFragment>(binding.container.id)
+        }
     }
 }

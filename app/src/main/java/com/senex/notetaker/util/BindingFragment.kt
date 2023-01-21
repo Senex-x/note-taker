@@ -19,9 +19,9 @@ abstract class BindingFragment<T : ViewBinding> : DaggerFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = inflateBinding(bindingInflater, layoutInflater, container) {
+    ): View = bindingInflater(layoutInflater, container, false).also {
         _binding = it
-    }
+    }.root
 
     protected abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> T
 
@@ -29,7 +29,7 @@ abstract class BindingFragment<T : ViewBinding> : DaggerFragment() {
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
-    ) = binding.onViewCreated()
+    ): Unit = binding.onViewCreated()
 
     protected abstract fun T.onViewCreated()
 
@@ -38,13 +38,6 @@ abstract class BindingFragment<T : ViewBinding> : DaggerFragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    private fun <T : ViewBinding> inflateBinding(
-        bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> T,
-        layoutInflater: LayoutInflater,
-        root: ViewGroup?,
-        initializer: (T) -> Unit,
-    ) = bindingInflater(layoutInflater, root, false).also(initializer).root
 }
 
 

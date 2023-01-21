@@ -2,6 +2,8 @@ package com.senex.notetaker.notes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.senex.notetaker.R
 import com.senex.notetaker.databinding.FragmentNotesBinding
 import com.senex.notetaker.util.BindingFragment
 
@@ -12,10 +14,5 @@ class NotesFragment : BindingFragment<FragmentNotesBinding>() {
 
     override fun FragmentNotesBinding.onViewCreated() {
 
-    }
-
-    companion object {
-
-        fun newInstance() = NotesFragment()
     }
 }
