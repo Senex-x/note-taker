@@ -5,7 +5,7 @@ import com.senex.notetaker.R
 import ru.tinkoff.mobile.tech.ti_recycler.base.BaseViewHolder
 import ru.tinkoff.mobile.tech.ti_recycler_coroutines.base.CoroutinesHolderFactory
 
-class NoteRecyclerViewHolderFactory : CoroutinesHolderFactory() {
+class NotesRecyclerViewHolderFactory : CoroutinesHolderFactory() {
 
     override fun createViewHolder(view: View, viewType: Int): BaseViewHolder<*>? =
         when (viewType) {

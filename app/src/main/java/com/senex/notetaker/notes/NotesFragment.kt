@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.senex.notetaker.R
 import com.senex.notetaker.databinding.FragmentNotesBinding
 import com.senex.notetaker.notes.recycler.NoteItem
-import com.senex.notetaker.notes.recycler.NoteRecyclerViewHolderFactory
+import com.senex.notetaker.notes.recycler.NotesRecyclerViewHolderFactory
 import com.senex.notetaker.util.BindingFragment
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -24,8 +24,8 @@ class NotesFragment : BindingFragment<FragmentNotesBinding>() {
     override fun FragmentNotesBinding.onViewCreated() {
 
         val recycler = TiRecyclerCoroutines<ViewTyped>(
-            recyclerView = noteRecycler,
-            holderFactory = NoteRecyclerViewHolderFactory(),
+            recyclerView = notesRecycler,
+            holderFactory = NotesRecyclerViewHolderFactory(),
         ) {
             layoutManager = LinearLayoutManager(
                 requireContext(),
