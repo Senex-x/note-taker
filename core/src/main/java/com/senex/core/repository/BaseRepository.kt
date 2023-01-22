@@ -10,7 +10,7 @@ interface BaseRepository<in T, out E> {
 
     suspend fun insert(item: T)
 
-    suspend fun insertAll(vararg items: T)
+    suspend fun insertAll(items: List<T>)
 
     suspend fun update(item: T)
 
