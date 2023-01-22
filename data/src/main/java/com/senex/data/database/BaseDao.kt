@@ -3,7 +3,7 @@ package com.senex.data.database
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
-interface BaseDao<in T, out E> {
+internal interface BaseDao<in T, out E> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: T)
 

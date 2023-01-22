@@ -6,7 +6,7 @@ import com.senex.data.entity.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface NoteDao : BaseDao<NoteEntity, NoteEntity> {
+internal interface NoteDao : BaseDao<NoteEntity, NoteEntity> {
 
     @Query("SELECT * FROM notes WHERE id = :id")
     override fun get(id: Long): Flow<NoteEntity?>

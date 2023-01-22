@@ -6,11 +6,10 @@ import com.senex.core.repository.NoteRepository
 import com.senex.data.database.NoteDao
 import com.senex.data.mapper.transform
 
-internal class NoteRepositoryImpl(private val dao: NoteDao) :
-    NoteRepository,
+internal class NoteRepositoryImpl(dao: NoteDao) : NoteRepository,
     BaseRepository<Note, Note> by BaseRepositoryImpl(
         dao = dao,
         toEntity = { transform() },
         toModel = { transform() },
-        toTypedArray = { toTypedArray() }
+        toTypedArray = { toTypedArray() },
     )

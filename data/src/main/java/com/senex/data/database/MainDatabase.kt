@@ -11,7 +11,7 @@ import com.senex.data.entity.NoteEntity
     version = 1,
     exportSchema = false,
 )
-abstract class MainDatabase : RoomDatabase() {
+internal abstract class MainDatabase : RoomDatabase() {
 
     abstract fun noteDao(): NoteDao
 }
