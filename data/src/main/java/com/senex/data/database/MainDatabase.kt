@@ -8,10 +8,11 @@ import com.senex.data.entity.NoteEntity
     entities = [
         NoteEntity::class,
     ],
-    version = 1
+    version = 1,
+    exportSchema = false,
 )
 abstract class MainDatabase : RoomDatabase() {
 
-    // abstract fun scheduleDao(): NoteDao
+    abstract fun noteDao(): NoteDao
 }
 

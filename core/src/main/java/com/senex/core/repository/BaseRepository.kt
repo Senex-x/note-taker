@@ -2,8 +2,9 @@ package com.senex.core.repository
 
 import kotlinx.coroutines.flow.Flow
 
-interface BaseRepository<in T, out E, K> {
-    fun get(id: K): Flow<E?>
+interface BaseRepository<in T, out E> {
+
+    fun get(id: Long): Flow<E?>
 
     fun getAll(): Flow<List<E>>
 
@@ -15,7 +16,7 @@ interface BaseRepository<in T, out E, K> {
 
     suspend fun delete(item: T)
 
-    suspend fun deleteById(id: K)
+    suspend fun deleteById(id: Long)
 
     suspend fun deleteAll()
 }
