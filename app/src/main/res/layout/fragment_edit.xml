@@ -7,11 +7,11 @@
     tools:context=".notes.NotesFragment">
 
     <EditText
+        android:id="@+id/edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusable="true"
-        android:focusedByDefault="true"
-        android:padding="100dp"
+        android:layout_margin="100dp"
         android:text="TEXT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

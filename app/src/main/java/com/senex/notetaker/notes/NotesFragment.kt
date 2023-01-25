@@ -52,7 +52,7 @@ class NotesFragment : BindingFragment<FragmentNotesBinding>() {
             recycler.clickedItem<NoteItem>(R.layout.item_note)
                 .map { "TextUi: ${it.text}" }
                 .collect {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                    //Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
 
                     EditFragment().show(parentFragmentManager, "tag")
                 }
