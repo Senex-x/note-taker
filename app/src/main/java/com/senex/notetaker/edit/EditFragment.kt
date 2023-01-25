@@ -5,18 +5,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.senex.notetaker.databinding.FragmentEditBinding
-import com.senex.notetaker.util.BindingFragment
+import com.senex.notetaker.util.BindingBottomSheetFragment
 import javax.inject.Inject
 
-class EditFragment : BindingFragment<FragmentEditBinding>() {
+class EditFragment : BindingBottomSheetFragment<FragmentEditBinding>() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
-    private val viewModel: EditViewModel by viewModels { factory }
-
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentEditBinding =
         FragmentEditBinding::inflate
+
+    private val viewModel: EditViewModel by viewModels { factory }
 
     override fun FragmentEditBinding.onViewCreated() {
 
