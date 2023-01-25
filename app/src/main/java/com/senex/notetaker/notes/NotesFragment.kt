@@ -3,6 +3,8 @@ package com.senex.notetaker.notes
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,8 +17,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.tinkoff.mobile.tech.ti_recycler.base.ViewTyped
 import ru.tinkoff.mobile.tech.ti_recycler_coroutines.TiRecyclerCoroutines
+import javax.inject.Inject
 
 class NotesFragment : BindingFragment<FragmentNotesBinding>() {
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+
+    private val viewModel: NotesViewModel by viewModels { factory }
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentNotesBinding =
         FragmentNotesBinding::inflate
