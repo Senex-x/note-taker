@@ -1,26 +1,25 @@
 package com.senex.notetaker.edit
 
+import android.app.ActionBar.LayoutParams
 import android.content.Context
-import android.graphics.Rect
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.senex.notetaker.databinding.FragmentEditBinding
-import com.senex.notetaker.util.BindingBottomSheetFragment
+import com.senex.notetaker.util.BindingDialogFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class EditFragment : BindingBottomSheetFragment<FragmentEditBinding>() {
+class EditFragment : BindingDialogFragment<FragmentEditBinding>() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -32,16 +31,16 @@ class EditFragment : BindingBottomSheetFragment<FragmentEditBinding>() {
 
     override fun FragmentEditBinding.onViewCreated() {
 
+        dialog!!.window!!.run {
+            setGravity(Gravity.BOTTOM)
+            setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        }
+
         lifecycleScope.launch {
-            delay(100)
+
+            delay(200)
 
             showSoftKeyboard(edit)
-
-            delay(100)
-
-            val params = root.layoutParams
-            params.height += getKeyboardHeight(root)
-            root.layoutParams = params
         }
     }
 
@@ -51,11 +50,5 @@ class EditFragment : BindingBottomSheetFragment<FragmentEditBinding>() {
             (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                 .showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         }
-    }
-
-    // TODO: Causes visual bugs
-    private fun getKeyboardHeight(attachedView: View): Int {
-        val insets = ViewCompat.getRootWindowInsets(attachedView)
-        return insets?.getInsets(WindowInsetsCompat.Type.ime())?.bottom ?: 0
     }
 }
