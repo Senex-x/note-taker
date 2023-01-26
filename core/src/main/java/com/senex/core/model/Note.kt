@@ -1,4 +1,4 @@
-package com.senex.core.entity
+package com.senex.core.model
 
 data class Note(
 

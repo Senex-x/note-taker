@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.senex.core.usecase.GetAllNotesUseCase
 import com.senex.notetaker.R
 import com.senex.notetaker.databinding.FragmentNotesBinding
 import com.senex.notetaker.edit.EditFragment
@@ -20,6 +21,9 @@ import ru.tinkoff.mobile.tech.ti_recycler_coroutines.TiRecyclerCoroutines
 import javax.inject.Inject
 
 class NotesFragment : BindingFragment<FragmentNotesBinding>() {
+
+    @Inject
+    lateinit var getAllNotesUseCase: GetAllNotesUseCase
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -43,13 +47,12 @@ class NotesFragment : BindingFragment<FragmentNotesBinding>() {
         }
         recycler.setItems(getItems())
 
-
-
         lifecycleScope.launch {
             recycler.clickedItem<NoteItem>(R.layout.item_note)
                 .map { "TextUi: ${it.text}" }
                 .collect {
                     //Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                    getAllNotesUseCase()
 
                     EditFragment().show(parentFragmentManager, "tag")
                 }

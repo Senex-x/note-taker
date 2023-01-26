@@ -1,9 +1,12 @@
 package com.senex.core.usecase
 
-import com.senex.core.entity.Note
+import com.senex.core.model.Note
 import com.senex.core.repository.NoteRepository
+import javax.inject.Inject
 
-class SaveNoteUseCase(private val noteRepository: NoteRepository) {
+class SaveNoteUseCase @Inject constructor(
+    private val noteRepository: NoteRepository,
+) {
 
     suspend operator fun invoke(note: Note): Unit = noteRepository.insert(note)
 }
