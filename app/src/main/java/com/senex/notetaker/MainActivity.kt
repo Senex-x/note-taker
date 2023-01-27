@@ -7,7 +7,7 @@ import androidx.fragment.app.commit
 import com.senex.notetaker.databinding.ActivityMainBinding
 import com.senex.notetaker.notes.NotesFragment
 
-class MainActivity : AppCompatActivity() {
+internal class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 

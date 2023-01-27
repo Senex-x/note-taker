@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class EditFragment : BindingDialogFragment<FragmentEditBinding>() {
+internal class EditFragment : BindingDialogFragment<FragmentEditBinding>() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory

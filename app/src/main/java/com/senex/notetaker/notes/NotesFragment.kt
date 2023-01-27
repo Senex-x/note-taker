@@ -20,7 +20,7 @@ import ru.tinkoff.mobile.tech.ti_recycler.base.ViewTyped
 import ru.tinkoff.mobile.tech.ti_recycler_coroutines.TiRecyclerCoroutines
 import javax.inject.Inject
 
-class NotesFragment : BindingFragment<FragmentNotesBinding>() {
+internal class NotesFragment : BindingFragment<FragmentNotesBinding>() {
 
     @Inject
     lateinit var getAllNotesUseCase: GetAllNotesUseCase

@@ -4,7 +4,7 @@ import com.senex.notetaker.di.AppComponentHolder
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 
-class MainApplication : DaggerApplication() {
+internal class MainApplication : DaggerApplication() {
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
         AppComponentHolder.get()

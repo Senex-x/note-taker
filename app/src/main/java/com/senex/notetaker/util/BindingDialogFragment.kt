@@ -15,7 +15,7 @@ import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-abstract class BindingDialogFragment<T : ViewBinding> : DialogFragment(),
+internal abstract class BindingDialogFragment<T : ViewBinding> : DialogFragment(),
     HasAndroidInjector {
 
     protected abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> T

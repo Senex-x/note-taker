@@ -8,7 +8,7 @@ import androidx.annotation.CallSuper
 import androidx.viewbinding.ViewBinding
 import dagger.android.support.DaggerFragment
 
-abstract class BindingFragment<T : ViewBinding> : DaggerFragment() {
+internal abstract class BindingFragment<T : ViewBinding> : DaggerFragment() {
 
     protected abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> T
 

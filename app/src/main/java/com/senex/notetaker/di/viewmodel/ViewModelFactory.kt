@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 import javax.inject.Provider
 
-typealias ViewModelsProvidersMap =
+internal typealias ViewModelsProvidersMap =
         Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 
-class ViewModelFactory @Inject constructor(
+internal class ViewModelFactory @Inject constructor(
     private val providers: ViewModelsProvidersMap,
 ) : ViewModelProvider.Factory {
 

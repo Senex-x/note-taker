@@ -14,7 +14,7 @@ import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-abstract class BindingBottomSheetFragment<T : ViewBinding> : BottomSheetDialogFragment(),
+internal abstract class BindingBottomSheetFragment<T : ViewBinding> : BottomSheetDialogFragment(),
     HasAndroidInjector {
 
     protected abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> T
