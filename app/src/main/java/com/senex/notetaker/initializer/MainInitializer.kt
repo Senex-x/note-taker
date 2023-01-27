@@ -2,8 +2,8 @@ package com.senex.notetaker.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import com.senex.core.di.ContextComponent
-import com.senex.core.di.ContextComponentHolder
+import com.senex.data.di.ContextComponent
+import com.senex.data.di.ContextComponentHolder
 
 internal class MainInitializer : Initializer<Unit> {
 

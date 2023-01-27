@@ -2,7 +2,6 @@ package com.senex.data.di
 
 import android.content.Context
 import com.senex.core.di.ComponentHolder
-import com.senex.core.di.ContextComponentHolder
 import com.senex.core.di.DaggerComponent
 import com.senex.core.repository.NoteRepository
 import dagger.Component

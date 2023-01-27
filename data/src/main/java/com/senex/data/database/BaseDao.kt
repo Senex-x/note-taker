@@ -4,6 +4,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 internal interface BaseDao<in T, out E> {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: T)
 

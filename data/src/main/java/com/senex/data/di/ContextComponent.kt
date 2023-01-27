@@ -1,6 +1,8 @@
-package com.senex.core.di
+package com.senex.data.di
 
 import android.content.Context
+import com.senex.core.di.DaggerComponent
+import com.senex.core.di.LazyComponentHolder
 
 fun interface ContextComponent : DaggerComponent {
 
