@@ -1,4 +1,4 @@
-package com.senex.data.di
+package com.senex.core.di
 
 abstract class LazyComponentHolder<T : DaggerComponent> {
 

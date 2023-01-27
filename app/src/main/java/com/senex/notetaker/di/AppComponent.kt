@@ -1,10 +1,6 @@
 package com.senex.notetaker.di
 
-import com.senex.core.di.CoreComponent
-import com.senex.core.di.DaggerCoreComponent
-import com.senex.data.di.DaggerDataComponent
-import com.senex.data.di.DataComponent
-import com.senex.data.di.DataComponentDependencies
+import com.senex.core.repository.NoteRepository
 import com.senex.data.di.DataComponentHolder
 import com.senex.notetaker.MainApplication
 import com.senex.notetaker.di.viewmodel.ViewModelModule
@@ -24,7 +20,7 @@ import javax.inject.Singleton
         ViewModelModule::class,
     ]
 )
-interface AppComponent : AndroidInjector<MainApplication> {
+internal interface AppComponent : AndroidInjector<MainApplication> {
 
     override fun inject(instance: MainApplication)
 
@@ -37,13 +33,10 @@ interface AppComponent : AndroidInjector<MainApplication> {
     }
 }
 
-interface AppComponentDependencies {
+internal interface AppComponentDependencies {
 
-    val dataComponent: DataComponent
-        get() = DataComponentHolder.get().component
-
-    val coreComponent: CoreComponent
-        get() = DaggerCoreComponent.create()
+    val noteRepository: NoteRepository
+        get() = DataComponentHolder.get().noteRepository()
 
     object Impl : AppComponentDependencies
 }

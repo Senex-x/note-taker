@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-interface FragmentInjectorModule {
+internal interface FragmentInjectorModule {
 
     @ContributesAndroidInjector
     fun contributeNotesFragment(): NotesFragment

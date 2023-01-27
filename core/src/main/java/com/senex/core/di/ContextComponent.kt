@@ -1,8 +1,6 @@
-package com.senex.notetaker.di
+package com.senex.core.di
 
 import android.content.Context
-import com.senex.data.di.DaggerComponent
-import com.senex.data.di.LazyComponentHolder
 
 fun interface ContextComponent : DaggerComponent {
 
@@ -10,6 +8,3 @@ fun interface ContextComponent : DaggerComponent {
 }
 
 object ContextComponentHolder : LazyComponentHolder<ContextComponent>()
-
-
-

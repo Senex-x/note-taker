@@ -43,6 +43,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.fragment:fragment-ktx:1.5.5"
+    implementation "androidx.startup:startup-runtime:1.1.1"
     implementation 'com.google.android.material:material:1.7.0'
 
     def adapter_delegates = "2.1.1"
@@ -51,6 +52,7 @@ dependencies {
     def dagger = "2.42"
     kapt "com.google.dagger:dagger-compiler:$dagger"
     kapt "com.google.dagger:dagger-android-processor:$dagger"
+
 
     testImplementation 'junit:junit:4.13.2'
 

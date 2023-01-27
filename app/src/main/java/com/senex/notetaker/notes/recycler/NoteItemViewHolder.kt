@@ -5,7 +5,7 @@ import com.senex.notetaker.databinding.ItemNoteBinding
 import ru.tinkoff.mobile.tech.ti_recycler.base.BaseViewHolder
 import ru.tinkoff.mobile.tech.ti_recycler.clicks.TiRecyclerClickListener
 
-class NoteItemViewHolder(view: View, clicks: TiRecyclerClickListener) :
+internal class NoteItemViewHolder(view: View, clicks: TiRecyclerClickListener) :
     BaseViewHolder<NoteItem>(view, clicks) {
 
     private val binding = ItemNoteBinding.bind(view)
