@@ -1,5 +1,7 @@
 package com.senex.notetaker.di
 
+import com.senex.core.di.ComponentHolder
+import com.senex.core.di.DaggerComponent
 import com.senex.core.repository.NoteRepository
 import com.senex.data.di.DataComponentHolder
 import com.senex.notetaker.MainApplication
@@ -20,16 +22,14 @@ import javax.inject.Singleton
         ViewModelModule::class,
     ]
 )
-internal interface AppComponent : AndroidInjector<MainApplication> {
+internal interface AppComponent : DaggerComponent, AndroidInjector<MainApplication> {
 
     override fun inject(instance: MainApplication)
 
-    @Component.Builder
-    interface Builder {
+    @Component.Factory
+    interface Factory {
 
-        fun dependencies(dependencies: AppComponentDependencies): Builder
-
-        fun build(): AppComponent
+        fun create(dependencies: AppComponentDependencies): AppComponent
     }
 }
 
@@ -39,4 +39,10 @@ internal interface AppComponentDependencies {
         get() = DataComponentHolder.get().noteRepository()
 
     object Impl : AppComponentDependencies
+}
+
+internal object AppComponentHolder : ComponentHolder<AppComponent>() {
+
+    override fun createComponent(): AppComponent =
+        DaggerAppComponent.factory().create(AppComponentDependencies.Impl)
 }
