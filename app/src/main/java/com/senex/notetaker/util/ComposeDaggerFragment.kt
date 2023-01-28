@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import com.senex.notetaker.ui.theme.NoteTakerTheme
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -38,7 +39,7 @@ abstract class ComposeDaggerFragment : Fragment(), HasAndroidInjector {
         setViewCompositionStrategy(
             ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)
         )
-        setContent { Compose() }
+        setContent { NoteTakerTheme { Compose() } }
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector

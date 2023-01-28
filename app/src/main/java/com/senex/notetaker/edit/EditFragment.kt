@@ -31,7 +31,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.senex.notetaker.ui.theme.NoteTakerTheme
 import com.senex.notetaker.util.ComposeDaggerFragment
 import com.senex.notetaker.util.toast
 import kotlinx.coroutines.android.awaitFrame
@@ -51,51 +50,49 @@ internal class EditFragment : ComposeDaggerFragment() {
         var shouldOpenDialog by remember { mutableStateOf(true) }
 
         if (shouldOpenDialog) {
-            NoteTakerTheme {
-                Dialog(
-                    properties = DialogProperties(usePlatformDefaultWidth = false),
-                    onDismissRequest = { shouldOpenDialog = false }
+            Dialog(
+                properties = DialogProperties(usePlatformDefaultWidth = false),
+                onDismissRequest = { shouldOpenDialog = false }
+            ) {
+                (LocalView.current.parent as DialogWindowProvider).window
+                    .setGravity(Gravity.BOTTOM)
+
+                val keyboard = LocalSoftwareKeyboardController.current
+                val focusRequester = remember { FocusRequester() }
+
+                var text by remember { mutableStateOf("") }
+
+                LaunchedEffect(focusRequester) {
+                    awaitFrame()
+                    awaitFrame()
+
+                    focusRequester.requestFocus()
+                    keyboard?.show()
+                }
+
+                Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.padding(16.dp)
                 ) {
-                    (LocalView.current.parent as DialogWindowProvider).window
-                        .setGravity(Gravity.BOTTOM)
-
-                    val keyboard = LocalSoftwareKeyboardController.current
-                    val focusRequester = remember { FocusRequester() }
-
-                    var text by remember { mutableStateOf("") }
-
-                    LaunchedEffect(focusRequester) {
-                        awaitFrame()
-                        awaitFrame()
-
-                        focusRequester.requestFocus()
-                        keyboard?.show()
-                    }
-
-                    Surface(
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            TextField(
-                                value = text,
-                                onValueChange = { text = it },
-                                label = { Text("Edit note") },
-                                modifier = Modifier
-                                    .focusRequester(focusRequester)
-                                    .fillMaxWidth()
-                                    .padding(bottom = 16.dp)
-                                    .weight(1f, false)
-                                    .animateContentSize()
-                            )
-                            Button(
-                                content = { Text("Save") },
-                                onClick = { toast("Save button clicked!") },
-                                modifier = Modifier
-                                    .align(Alignment.End)
-                                    .weight(1f, false)
-                            )
-                        }
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        TextField(
+                            value = text,
+                            onValueChange = { text = it },
+                            label = { Text("Edit note") },
+                            modifier = Modifier
+                                .focusRequester(focusRequester)
+                                .fillMaxWidth()
+                                .padding(bottom = 16.dp)
+                                .weight(1f, false)
+                                .animateContentSize()
+                        )
+                        Button(
+                            content = { Text("Save") },
+                            onClick = { toast("Save button clicked!") },
+                            modifier = Modifier
+                                .align(Alignment.End)
+                                .weight(1f, false)
+                        )
                     }
                 }
             }
