@@ -6,36 +6,39 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager.LayoutParams
 import android.view.inputmethod.InputMethodManager
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogWindowProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.senex.notetaker.util.ComposeDaggerDialogFragment
+import com.senex.notetaker.util.ComposeDaggerFragment
 import com.senex.notetaker.util.toast
+import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-internal class EditFragment : ComposeDaggerDialogFragment() {
+internal class EditFragment : ComposeDaggerFragment() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -45,36 +48,50 @@ internal class EditFragment : ComposeDaggerDialogFragment() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     override val content = @Composable {
 
-        val showKeyboard = remember { mutableStateOf(true) }
         val focusRequester = remember { FocusRequester() }
         val keyboard = LocalSoftwareKeyboardController.current
 
         LaunchedEffect(focusRequester) {
-            if (showKeyboard.value) {
-                delay(500)
-                focusRequester.requestFocus()
-                keyboard?.show()
-            }
+
+            awaitFrame()
+            awaitFrame()
+            focusRequester.requestFocus()
+            keyboard?.show()
         }
 
-        Column(modifier = Modifier.padding(8.dp)) {
-            TextField(
-                value = "",
-                label = { Text("Edit note") },
-                onValueChange = { },
-                modifier = Modifier
-                    .focusRequester(focusRequester)
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-            )
-            Button(
-                modifier = Modifier.align(Alignment.End),
-                onClick = { toast("Save button clicked!") }
+        val dialogOpen = remember { mutableStateOf(true) }
+
+        if (dialogOpen.value) {
+            Dialog(
+                onDismissRequest = { dialogOpen.value = false }
             ) {
-                Text("Save")
+                val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
+                dialogWindowProvider.window.apply {
+                    setGravity(Gravity.BOTTOM)
+                    setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                }
+
+                val text = remember { mutableStateOf("Text") }
+
+                Column(modifier = Modifier.padding(8.dp)) {
+                    TextField(
+                        value = text.value,
+                        label = { Text("Edit note") },
+                        onValueChange = { text.value = it },
+                        modifier = Modifier
+                            .focusRequester(focusRequester)
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                    )
+                    Button(
+                        modifier = Modifier.align(Alignment.End),
+                        onClick = { toast("Save button clicked!") }
+                    ) {
+                        Text("Save")
+                    }
+                }
             }
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -83,11 +100,11 @@ internal class EditFragment : ComposeDaggerDialogFragment() {
 //            delay(200)
 //        }
 
-        dialog!!.window!!.run { // TODO Bruh
-            setGravity(Gravity.BOTTOM)
-            setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-            setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-        }
+//        dialog!!.window!!.run { // TODO Bruh
+//            setGravity(Gravity.BOTTOM)
+//            setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+//            //setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+//        }
     }
 
     @Preview

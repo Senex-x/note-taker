@@ -2,6 +2,8 @@ package com.senex.notetaker.notes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -54,7 +56,11 @@ internal class NotesFragment : BindingFragment<FragmentNotesBinding>() {
                     //Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
                     getAllNotesUseCase()
 
-                    EditFragment().show(parentFragmentManager, "tag")
+                    parentFragmentManager.commit {
+                        add<EditFragment>(R.id.container)
+                    }
+
+                   // EditFragment().show(parentFragmentManager, "tag")
                 }
         }
     }
