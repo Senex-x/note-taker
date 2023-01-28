@@ -1,4 +1,4 @@
-package com.senex.core.util
+package com.senex.notetaker.util
 
 import android.content.Context
 import android.util.Log
@@ -11,6 +11,8 @@ fun Context.toast(message: String?) =
     message?.let {
         Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
     } ?: Unit
+
+fun Fragment.toast(message: String?) = requireContext().toast(message)
 
 fun log(message: String?) =
     Log.d(DEBUG_PREFIX, message ?: "null")
