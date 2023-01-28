@@ -1,4 +1,4 @@
-package com.senex.notetaker.notes.recycler
+package com.senex.notetaker.ui.notes
 
 import ru.tinkoff.mobile.tech.ti_recycler.base.ViewTyped
 

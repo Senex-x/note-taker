@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import com.senex.notetaker.notes.NotesFragment
+import com.senex.notetaker.ui.notes.NotesFragment
 
 internal class MainActivity : AppCompatActivity() {
 

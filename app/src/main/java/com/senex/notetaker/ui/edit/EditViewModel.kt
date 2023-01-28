@@ -1,4 +1,4 @@
-package com.senex.notetaker.edit
+package com.senex.notetaker.ui.edit
 
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject

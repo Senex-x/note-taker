@@ -1,7 +1,7 @@
 package com.senex.notetaker.di
 
-import com.senex.notetaker.edit.EditFragment
-import com.senex.notetaker.notes.NotesFragment
+import com.senex.notetaker.ui.edit.EditFragment
+import com.senex.notetaker.ui.notes.NotesFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

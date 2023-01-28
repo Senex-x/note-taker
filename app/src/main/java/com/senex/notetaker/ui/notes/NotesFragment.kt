@@ -1,4 +1,4 @@
-package com.senex.notetaker.notes
+package com.senex.notetaker.ui.notes
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,8 +24,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.senex.core.usecase.GetAllNotesUseCase
 import com.senex.notetaker.R
-import com.senex.notetaker.edit.EditFragment
-import com.senex.notetaker.notes.recycler.NoteListItem
+import com.senex.notetaker.ui.edit.EditFragment
 import com.senex.notetaker.util.ComposeDaggerFragment
 import javax.inject.Inject
 import kotlin.random.Random

@@ -2,8 +2,8 @@ package com.senex.notetaker.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.senex.notetaker.edit.EditViewModel
-import com.senex.notetaker.notes.NotesViewModel
+import com.senex.notetaker.ui.edit.EditViewModel
+import com.senex.notetaker.ui.notes.NotesViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

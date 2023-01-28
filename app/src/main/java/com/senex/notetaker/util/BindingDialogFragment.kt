@@ -14,19 +14,21 @@ import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-internal abstract class BindingDialogFragment<T : ViewBinding> : DialogFragment(),
+abstract class BindingDialogFragment<T : ViewBinding> : DialogFragment(),
     HasAndroidInjector {
 
     protected abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> T
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     private var _binding: T? = null
     private val binding
         get() = _binding!!
 
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
-
     protected open fun T.onViewCreated() = Unit
+
+    final override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     @CallSuper
     override fun onAttach(context: Context) {
@@ -54,8 +56,4 @@ internal abstract class BindingDialogFragment<T : ViewBinding> : DialogFragment(
         super.onDestroyView()
         _binding = null
     }
-
-    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 }
-
-

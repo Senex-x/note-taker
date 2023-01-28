@@ -1,4 +1,4 @@
-package com.senex.notetaker.edit
+package com.senex.notetaker.ui.edit
 
 import android.view.Gravity
 import androidx.compose.animation.animateContentSize

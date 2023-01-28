@@ -7,18 +7,18 @@ import androidx.fragment.app.Fragment
 
 private const val DEBUG_PREFIX = "app-debug"
 
-fun Context.toast(message: String?) =
+internal fun Context.toast(message: String?) =
     message?.let {
         Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
     } ?: Unit
 
-fun Fragment.toast(message: String?) = requireContext().toast(message)
+internal fun Fragment.toast(message: String?) = requireContext().toast(message)
 
-fun log(message: String?) =
+internal fun log(message: String?) =
     Log.d(DEBUG_PREFIX, message ?: "null")
 
-fun Fragment.log(message: String?) =
+internal fun Fragment.log(message: String?) =
     Log.d(DEBUG_PREFIX + ": " + this::class.java.simpleName, message ?: "null")
 
 @JvmName(name = "logExt")
-fun String.log() = log(this)
+internal fun String.log() = log(this)
