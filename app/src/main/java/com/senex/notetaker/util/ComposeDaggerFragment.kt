@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -19,7 +18,8 @@ import javax.inject.Inject
 
 abstract class ComposeDaggerFragment : Fragment(), HasAndroidInjector {
 
-    abstract val content: @Composable () -> Unit
+    @Composable
+    abstract fun Compose()
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -38,7 +38,7 @@ abstract class ComposeDaggerFragment : Fragment(), HasAndroidInjector {
         setViewCompositionStrategy(
             ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)
         )
-        setContent(content)
+        setContent { Compose() }
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector

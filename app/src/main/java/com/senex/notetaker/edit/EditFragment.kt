@@ -1,42 +1,41 @@
 package com.senex.notetaker.edit
 
-import android.content.Context
-import android.os.Bundle
 import android.view.Gravity
-import android.view.View
-import android.view.WindowManager.LayoutParams
-import android.view.inputmethod.InputMethodManager
-import androidx.compose.foundation.background
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.senex.notetaker.util.ComposeDaggerDialogFragment
+import com.senex.notetaker.ui.theme.NoteTakerTheme
 import com.senex.notetaker.util.ComposeDaggerFragment
 import com.senex.notetaker.util.toast
 import kotlinx.coroutines.android.awaitFrame
-import kotlinx.coroutines.delay
 import javax.inject.Inject
-
 
 internal class EditFragment : ComposeDaggerFragment() {
 
@@ -46,99 +45,66 @@ internal class EditFragment : ComposeDaggerFragment() {
     private val viewModel: EditViewModel by viewModels { factory }
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-    override val content = @Composable {
+    @Composable
+    override fun Compose() {
 
-        val focusRequester = remember { FocusRequester() }
-        val keyboard = LocalSoftwareKeyboardController.current
+        var shouldOpenDialog by remember { mutableStateOf(true) }
 
-        LaunchedEffect(focusRequester) {
+        if (shouldOpenDialog) {
+            NoteTakerTheme {
+                Dialog(
+                    properties = DialogProperties(usePlatformDefaultWidth = false),
+                    onDismissRequest = { shouldOpenDialog = false }
+                ) {
+                    (LocalView.current.parent as DialogWindowProvider).window
+                        .setGravity(Gravity.BOTTOM)
 
-            awaitFrame()
-            awaitFrame()
-            focusRequester.requestFocus()
-            keyboard?.show()
-        }
+                    val keyboard = LocalSoftwareKeyboardController.current
+                    val focusRequester = remember { FocusRequester() }
 
-        val dialogOpen = remember { mutableStateOf(true) }
+                    var text by remember { mutableStateOf("") }
 
-        if (dialogOpen.value) {
-            Dialog(
-                onDismissRequest = { dialogOpen.value = false }
-            ) {
-                val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-                dialogWindowProvider.window.apply {
-                    setGravity(Gravity.BOTTOM)
-                    setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                }
+                    LaunchedEffect(focusRequester) {
+                        awaitFrame()
+                        awaitFrame()
 
-                val text = remember { mutableStateOf("Text") }
+                        focusRequester.requestFocus()
+                        keyboard?.show()
+                    }
 
-                Column(modifier = Modifier.padding(8.dp)) {
-                    TextField(
-                        value = text.value,
-                        label = { Text("Edit note") },
-                        onValueChange = { text.value = it },
-                        modifier = Modifier
-                            .focusRequester(focusRequester)
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                    )
-                    Button(
-                        modifier = Modifier.align(Alignment.End),
-                        onClick = { toast("Save button clicked!") }
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.padding(16.dp)
                     ) {
-                        Text("Save")
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            TextField(
+                                value = text,
+                                onValueChange = { text = it },
+                                label = { Text("Edit note") },
+                                modifier = Modifier
+                                    .focusRequester(focusRequester)
+                                    .fillMaxWidth()
+                                    .padding(bottom = 16.dp)
+                                    .weight(1f, false)
+                                    .animateContentSize()
+                            )
+                            Button(
+                                content = { Text("Save") },
+                                onClick = { toast("Save button clicked!") },
+                                modifier = Modifier
+                                    .align(Alignment.End)
+                                    .weight(1f, false)
+                            )
+                        }
                     }
                 }
             }
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            delay(200)
-//        }
-
-//        dialog!!.window!!.run { // TODO Bruh
-//            setGravity(Gravity.BOTTOM)
-//            setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-//            //setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-//        }
-    }
-
     @Preview
     @Composable
-    fun PreviewEditFragment() {
-        content()
-    }
-
-//    override fun FragmentEditBinding.onViewCreated() {
-//
-//        dialog!!.window!!.run { // TODO Bruh
-//            setGravity(Gravity.BOTTOM)
-//            setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-//        }
-//
-//        lifecycleScope.launch {
-//
-//            delay(200) // Don't ask please
-//
-//            showSoftKeyboard(edit)
-//        }
-//
-//        saveButton.setOnClickListener {
-//
-//        }
-//
-//
-//    }
-
-    // TODO: Bruh
-    private fun showSoftKeyboard(view: View) {
-        if (view.requestFocus()) {
-            (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        }
+    private fun PreviewEditFragment() {
+        Compose()
     }
 }
