@@ -45,7 +45,7 @@ internal class EditFragment : ComposeDaggerFragment() {
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
-    override fun Compose() {
+    override fun Content() {
 
         var shouldOpenDialog by remember { mutableStateOf(true) }
 
@@ -102,6 +102,6 @@ internal class EditFragment : ComposeDaggerFragment() {
     @Preview
     @Composable
     private fun PreviewEditFragment() {
-        Compose()
+        Content()
     }
 }

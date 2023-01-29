@@ -20,7 +20,7 @@ import javax.inject.Inject
 abstract class ComposeDaggerFragment : Fragment(), HasAndroidInjector {
 
     @Composable
-    abstract fun Compose()
+    abstract fun Content()
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -39,7 +39,7 @@ abstract class ComposeDaggerFragment : Fragment(), HasAndroidInjector {
         setViewCompositionStrategy(
             ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)
         )
-        setContent { NoteTakerTheme { Compose() } }
+        setContent { NoteTakerTheme { this@ComposeDaggerFragment.Content() } }
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector

@@ -40,7 +40,7 @@ internal class NotesFragment : ComposeDaggerFragment() {
     private val viewModel: NotesViewModel by viewModels { factory }
 
     @Composable
-    override fun Compose() {
+    override fun Content() {
 
         val items = remember {
             buildList {
