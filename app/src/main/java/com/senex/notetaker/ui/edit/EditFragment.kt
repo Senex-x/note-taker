@@ -54,12 +54,12 @@ internal class EditFragment : ComposeDaggerFragment() {
                 properties = DialogProperties(usePlatformDefaultWidth = false),
                 onDismissRequest = { shouldOpenDialog = false }
             ) {
-                (LocalView.current.parent as DialogWindowProvider).window
+                (LocalView.current.parent as DialogWindowProvider)
+                    .window
                     .setGravity(Gravity.BOTTOM)
 
                 val keyboard = LocalSoftwareKeyboardController.current
                 val focusRequester = remember { FocusRequester() }
-
                 var text by remember { mutableStateOf("") }
 
                 LaunchedEffect(focusRequester) {
@@ -88,10 +88,13 @@ internal class EditFragment : ComposeDaggerFragment() {
                         )
                         Button(
                             content = { Text("Save") },
-                            onClick = { toast("Save button clicked!") },
+                            onClick = {
+                                toast("Save button clicked!")
+                                shouldOpenDialog = false
+                            },
                             modifier = Modifier
                                 .align(Alignment.End)
-                                .weight(1f, false)
+                                .weight(1f, false),
                         )
                     }
                 }

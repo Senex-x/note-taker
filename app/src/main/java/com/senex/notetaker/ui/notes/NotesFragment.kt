@@ -22,8 +22,6 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.senex.core.repository.NoteRepository
-import com.senex.core.usecase.GetAllNotesUseCase
 import com.senex.notetaker.R
 import com.senex.notetaker.ui.edit.EditFragment
 import com.senex.notetaker.util.ComposeDaggerFragment
@@ -32,20 +30,14 @@ import javax.inject.Inject
 internal class NotesFragment : ComposeDaggerFragment() {
 
     @Inject
-    lateinit var getAllNotesUseCase: GetAllNotesUseCase
-
-    @Inject
     lateinit var factory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var noteRepository: NoteRepository
 
     private val viewModel: NotesViewModel by viewModels { factory }
 
     @Composable
     override fun Content() {
 
-        val notes: List<NoteListItem> by viewModel.notes.collectAsStateWithLifecycle(initialValue = emptyList())
+        val notes by viewModel.notes.collectAsStateWithLifecycle(initialValue = emptyList())
 
         LazyColumn(contentPadding = PaddingValues(all = 16.dp)) {
             items(
