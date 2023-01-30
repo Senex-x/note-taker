@@ -12,7 +12,11 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,12 +26,14 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.senex.core.usecase.GetAllNotesUseCase
 import com.senex.notetaker.R
 import com.senex.notetaker.ui.edit.EditFragment
 import com.senex.notetaker.util.ComposeDaggerFragment
+import kotlinx.coroutines.flow.onEach
+import java.util.*
 import javax.inject.Inject
-import kotlin.random.Random
 
 internal class NotesFragment : ComposeDaggerFragment() {
 
@@ -42,19 +48,21 @@ internal class NotesFragment : ComposeDaggerFragment() {
     @Composable
     override fun Content() {
 
-        val items = remember {
-            buildList {
-                for (i in 0..8) {
-                    getItems().forEach {
-                        add(it.copy(id = Random.nextLong()))
-                    }
-                }
-            }.toMutableStateList()
-        }
+//        val items = remember {
+//            buildList {
+//                for (i in 0..8) {
+//                    getItems().forEach {
+//                        add(it.copy(id = Random().nextLong()))
+//                    }
+//                }
+//            }.toMutableStateList()
+//        }
+
+        val notes: List<NoteListItem> = viewModel.notes.collectAsState().value
 
         LazyColumn(contentPadding = PaddingValues(all = 16.dp)) {
             items(
-                items = items,
+                items = notes,
                 itemContent = { noteItem ->
                     Surface(
                         shape = RoundedCornerShape(16.dp),
@@ -78,7 +86,7 @@ internal class NotesFragment : ComposeDaggerFragment() {
                                     .padding(end = 8.dp)
                                     .align(Alignment.Top),
                                 onCheckedChange = {
-                                    items[items.indexOf(noteItem)] = noteItem.copy(isDone = it)
+                                   // items[items.indexOf(noteItem)] = noteItem.copy(isDone = it)
                                 },
                             )
                             Text(text = noteItem.text)
