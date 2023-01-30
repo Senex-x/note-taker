@@ -9,9 +9,15 @@ internal data class NoteListItem(
     val isDone: Boolean = false,
 ) : ViewTyped {
 
+    fun toModel() = Note(
+        id = id,
+        text = text,
+        isDone = isDone,
+    )
+
     companion object {
 
-        fun from(note: Note) = with(note) {
+        fun fromModel(note: Note) = with(note) {
             NoteListItem(
                 id = id,
                 text = text,

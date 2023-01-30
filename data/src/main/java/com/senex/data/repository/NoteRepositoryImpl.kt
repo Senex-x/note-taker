@@ -6,7 +6,9 @@ import com.senex.core.repository.NoteRepository
 import com.senex.data.database.NoteDao
 import com.senex.data.mapper.transform
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 internal class NoteRepositoryImpl @Inject constructor(
     dao: NoteDao,
 ) : NoteRepository, BaseRepository<Note, Note> by BaseRepositoryImpl(

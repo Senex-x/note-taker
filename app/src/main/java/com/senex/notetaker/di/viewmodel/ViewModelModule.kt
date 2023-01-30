@@ -7,15 +7,18 @@ import com.senex.notetaker.ui.notes.NotesViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import javax.inject.Singleton
 
 @Module
 internal abstract class ViewModelModule {
 
+    @Singleton
     @Binds
     abstract fun bindViewModelFactory(
         factory: ViewModelFactory,
     ): ViewModelProvider.Factory
 
+    @Singleton
     @Binds
     @IntoMap
     @ViewModelKey(NotesViewModel::class)
@@ -23,6 +26,7 @@ internal abstract class ViewModelModule {
         viewModel: NotesViewModel,
     ): ViewModel
 
+    @Singleton
     @Binds
     @IntoMap
     @ViewModelKey(EditViewModel::class)

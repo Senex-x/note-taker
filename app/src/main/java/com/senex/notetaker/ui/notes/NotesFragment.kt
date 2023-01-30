@@ -12,12 +12,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,13 +21,12 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.senex.core.repository.NoteRepository
 import com.senex.core.usecase.GetAllNotesUseCase
 import com.senex.notetaker.R
 import com.senex.notetaker.ui.edit.EditFragment
 import com.senex.notetaker.util.ComposeDaggerFragment
-import kotlinx.coroutines.flow.onEach
-import java.util.*
 import javax.inject.Inject
 
 internal class NotesFragment : ComposeDaggerFragment() {
@@ -43,22 +37,15 @@ internal class NotesFragment : ComposeDaggerFragment() {
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
+    @Inject
+    lateinit var noteRepository: NoteRepository
+
     private val viewModel: NotesViewModel by viewModels { factory }
 
     @Composable
     override fun Content() {
 
-//        val items = remember {
-//            buildList {
-//                for (i in 0..8) {
-//                    getItems().forEach {
-//                        add(it.copy(id = Random().nextLong()))
-//                    }
-//                }
-//            }.toMutableStateList()
-//        }
-
-        val notes: List<NoteListItem> = viewModel.notes.collectAsState().value
+        val notes: List<NoteListItem> by viewModel.notes.collectAsStateWithLifecycle(initialValue = emptyList())
 
         LazyColumn(contentPadding = PaddingValues(all = 16.dp)) {
             items(
@@ -86,7 +73,7 @@ internal class NotesFragment : ComposeDaggerFragment() {
                                     .padding(end = 8.dp)
                                     .align(Alignment.Top),
                                 onCheckedChange = {
-                                   // items[items.indexOf(noteItem)] = noteItem.copy(isDone = it)
+                                    viewModel.saveNote(noteItem.toModel().copy(isDone = it))
                                 },
                             )
                             Text(text = noteItem.text)
@@ -96,12 +83,4 @@ internal class NotesFragment : ComposeDaggerFragment() {
             )
         }
     }
-
-    private fun getItems() = listOf(
-        NoteListItem(1, "Hello!"),
-        NoteListItem(
-            2,
-            "Thats the second item!! Thats the second item!! Thats the second item!! Thats the second item!! Thats the second item!! Thats the second item!! Thats the second item!! Thats the second item!! Thats the second item!! Thats the second item!! "
-        ),
-    )
 }

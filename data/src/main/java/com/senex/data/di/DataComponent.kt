@@ -5,12 +5,14 @@ import com.senex.core.di.ComponentHolder
 import com.senex.core.di.DaggerComponent
 import com.senex.core.repository.NoteRepository
 import dagger.Component
+import javax.inject.Singleton
 
 interface DataComponent : DaggerComponent {
 
     fun noteRepository(): NoteRepository
 }
 
+@Singleton
 @Component(
     dependencies = [
         DataComponentDependencies::class

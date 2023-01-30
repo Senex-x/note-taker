@@ -4,5 +4,5 @@ data class Note(
 
     val id: Long,
     val text: String,
-    val isDone: Boolean,
+    val isDone: Boolean = false,
 )

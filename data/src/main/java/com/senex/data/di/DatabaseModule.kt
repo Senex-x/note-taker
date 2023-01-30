@@ -10,6 +10,7 @@ import javax.inject.Singleton
 @Module
 internal object DatabaseModule {
 
+    @Singleton
     @Provides
     fun provideAppDatabase(appContext: Context): MainDatabase =
         Room.databaseBuilder(

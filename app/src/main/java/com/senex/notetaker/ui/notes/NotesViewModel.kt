@@ -5,30 +5,27 @@ import androidx.lifecycle.viewModelScope
 import com.senex.core.model.Note
 import com.senex.core.usecase.GetAllNotesUseCase
 import com.senex.core.usecase.SaveNoteUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class NotesViewModel @Inject constructor(
     getAllNotesUseCase: GetAllNotesUseCase,
-    saveNoteUseCase: SaveNoteUseCase,
+    private val saveNoteUseCase: SaveNoteUseCase,
 ) : ViewModel() {
 
-    private val _notes: MutableStateFlow<List<NoteListItem>> = MutableStateFlow(emptyList())
-    val notes: StateFlow<List<NoteListItem>> = _notes
+    val notes: Flow<List<NoteListItem>> = getAllNotesUseCase()
+        .map { list -> list.map { NoteListItem.fromModel(it) } }
 
-    init {
+    val notesTest: Flow<List<Note>> = getAllNotesUseCase()
+
+    fun saveNote(note: Note) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) { // TODO Inject dispatcher
-                getAllNotesUseCase().onEach { notes ->
-                    val listItems = notes.map { NoteListItem.from(it) }
-                    _notes.emit(listItems)
-                }
-            }
+            saveNoteUseCase(note)
         }
     }
 }

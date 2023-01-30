@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "notes")
 internal data class NoteEntity(
 
-    @PrimaryKey
-    val id: Long,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
     val text: String,
     val isDone: Boolean,
 )
