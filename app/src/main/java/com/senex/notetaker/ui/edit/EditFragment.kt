@@ -1,5 +1,6 @@
 package com.senex.notetaker.ui.edit
 
+import android.os.Bundle
 import android.view.Gravity
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
@@ -24,24 +25,27 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.senex.notetaker.di.viewmodel.assistedViewModel
 import com.senex.notetaker.util.ComposeDaggerFragment
-import com.senex.notetaker.util.toast
 import kotlinx.coroutines.android.awaitFrame
 import javax.inject.Inject
 
 internal class EditFragment : ComposeDaggerFragment() {
 
     @Inject
-    lateinit var factory: ViewModelProvider.Factory
+    lateinit var factory: EditViewModel.Factory
 
-    private val viewModel: EditViewModel by viewModels { factory }
+    private val noteId: Long by lazy { requireNotNull(arguments).getLong(NOTE_ID_KEY) }
+
+    private val viewModel: EditViewModel by assistedViewModel { factory.create(noteId) }
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
@@ -60,7 +64,16 @@ internal class EditFragment : ComposeDaggerFragment() {
 
                 val keyboard = LocalSoftwareKeyboardController.current
                 val focusRequester = remember { FocusRequester() }
-                var text by remember { mutableStateOf("") }
+                val note by viewModel.note.collectAsStateWithLifecycle()
+
+                var noteTextFieldValue by remember { mutableStateOf(TextFieldValue()) }
+
+                LaunchedEffect(note) {
+                    noteTextFieldValue = TextFieldValue(
+                        text = note.text,
+                        selection = TextRange(note.text.length)
+                    )
+                }
 
                 LaunchedEffect(focusRequester) {
                     awaitFrame()
@@ -76,8 +89,8 @@ internal class EditFragment : ComposeDaggerFragment() {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         TextField(
-                            value = text,
-                            onValueChange = { text = it },
+                            value = noteTextFieldValue,
+                            onValueChange = { noteTextFieldValue = it },
                             label = { Text("Edit note") },
                             modifier = Modifier
                                 .focusRequester(focusRequester)
@@ -89,7 +102,7 @@ internal class EditFragment : ComposeDaggerFragment() {
                         Button(
                             content = { Text("Save") },
                             onClick = {
-                                toast("Save button clicked!")
+                                viewModel.saveNote(note.copy(text = noteTextFieldValue.text))
                                 shouldOpenDialog = false
                             },
                             modifier = Modifier
@@ -106,5 +119,13 @@ internal class EditFragment : ComposeDaggerFragment() {
     @Composable
     private fun PreviewEditFragment() {
         Content()
+    }
+
+    companion object {
+
+        private const val NOTE_ID_KEY = "noteId"
+
+        fun createArguments(noteId: Long): Bundle = Bundle()
+            .apply { putLong(NOTE_ID_KEY, noteId) }
     }
 }

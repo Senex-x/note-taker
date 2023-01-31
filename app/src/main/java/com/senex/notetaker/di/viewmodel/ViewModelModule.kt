@@ -25,12 +25,4 @@ internal abstract class ViewModelModule {
     abstract fun bindNotesViewModel(
         viewModel: NotesViewModel,
     ): ViewModel
-
-    @Singleton
-    @Binds
-    @IntoMap
-    @ViewModelKey(EditViewModel::class)
-    abstract fun bindEditViewModel(
-        viewModel: EditViewModel,
-    ): ViewModel
 }

@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 internal class NotesViewModel @Inject constructor(
-    private val saveNoteUseCase: SaveNoteUseCase,
     getAllNotesUseCase: GetAllNotesUseCase,
+    private val saveNoteUseCase: SaveNoteUseCase,
 ) : ViewModel() {
 
     val notes: StateFlow<List<NoteListItem>> = getAllNotesUseCase()

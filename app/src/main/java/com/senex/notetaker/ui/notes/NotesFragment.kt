@@ -37,7 +37,7 @@ internal class NotesFragment : ComposeDaggerFragment() {
     @Composable
     override fun Content() {
 
-        val notes by viewModel.notes.collectAsStateWithLifecycle(initialValue = emptyList())
+        val notes by viewModel.notes.collectAsStateWithLifecycle()
 
         LazyColumn(contentPadding = PaddingValues(all = 16.dp)) {
             items(
@@ -51,7 +51,10 @@ internal class NotesFragment : ComposeDaggerFragment() {
                             .clip(RoundedCornerShape(16.dp))
                             .clickable {
                                 parentFragmentManager.commit {
-                                    add<EditFragment>(R.id.container)
+                                    add<EditFragment>(
+                                        containerViewId = R.id.container,
+                                        args = EditFragment.createArguments(noteItem.id)
+                                    )
                                 }
                             },
                     ) {
