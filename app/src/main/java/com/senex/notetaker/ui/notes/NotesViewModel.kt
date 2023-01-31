@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.senex.core.model.Note
 import com.senex.core.usecase.GetAllNotesUseCase
-import com.senex.core.usecase.SaveNoteUseCase
+import com.senex.core.usecase.UpdateNoteUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -14,16 +14,16 @@ import javax.inject.Inject
 
 internal class NotesViewModel @Inject constructor(
     getAllNotesUseCase: GetAllNotesUseCase,
-    private val saveNoteUseCase: SaveNoteUseCase,
+    private val updateNoteUseCase: UpdateNoteUseCase,
 ) : ViewModel() {
 
     val notes: StateFlow<List<NoteListItem>> = getAllNotesUseCase()
         .map { list -> list.map { NoteListItem.fromModel(it) } }
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    fun saveNote(note: Note) {
+    fun updateNote(note: Note) {
         viewModelScope.launch {
-            saveNoteUseCase(note)
+            updateNoteUseCase(note)
         }
     }
 }

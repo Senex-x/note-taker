@@ -3,41 +3,57 @@ package com.senex.notetaker.ui.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.senex.core.model.Note
+import com.senex.core.usecase.DeleteNoteUseCase
 import com.senex.core.usecase.GetNoteUseCase
-import com.senex.core.usecase.SaveNoteUseCase
+import com.senex.core.usecase.InsertNoteUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 internal class EditViewModel @AssistedInject constructor(
-    @Assisted noteId: Long,
+    @Assisted noteId: Long?,
     getNoteUseCase: GetNoteUseCase,
-    private val saveNoteUseCase: SaveNoteUseCase,
+    private val insertNoteUseCase: InsertNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
 ) : ViewModel() {
 
-    val note: StateFlow<Note> = getNoteUseCase(noteId)
-        .map { requireNotNull(it) { "Note item by id: $noteId not found" } }
+    lateinit var initialTextValue: String
+
+    val note: StateFlow<Note> = if (noteId != null) {
+        getNoteUseCase(noteId).map { it ?: Note() }
+    } else {
+        flowOf(Note())
+    }
+        .onEach { initialTextValue = it.text }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = Note(text = "")
+            initialValue = Note()
         )
 
     fun saveNote(note: Note) {
         viewModelScope.launch {
-            saveNoteUseCase(note)
+            if (note.text != initialTextValue) {
+                if (note.text.isNotBlank()) {
+                    insertNoteUseCase(note)
+                } else {
+                    deleteNoteUseCase(note.id)
+                }
+            }
         }
     }
 
     @AssistedFactory
     interface Factory {
 
-        fun create(noteId: Long): EditViewModel
+        fun create(noteId: Long?): EditViewModel
     }
 }
 

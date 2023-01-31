@@ -42,7 +42,10 @@ internal class EditFragment : ComposeDaggerFragment() {
 
     private val viewModel: EditViewModel by assistedViewModel { factory.create(noteId) }
 
-    private val noteId: Long by lazy { requireNotNull(arguments).getLong(NOTE_ID_KEY) }
+    private val noteId: Long? by lazy {
+        val id = requireNotNull(arguments).getLong(NOTE_ID_KEY)
+        if(id != 0L) id else null
+    }
 
     @Inject
     lateinit var factory: EditViewModel.Factory
@@ -51,22 +54,25 @@ internal class EditFragment : ComposeDaggerFragment() {
     @Composable
     override fun Content() {
 
+        val note by viewModel.note.collectAsStateWithLifecycle()
+
         var shouldOpenDialog by remember { mutableStateOf(true) }
+        var noteTextFieldValue by remember { mutableStateOf(TextFieldValue()) }
 
         if (shouldOpenDialog) {
             Dialog(
                 properties = DialogProperties(usePlatformDefaultWidth = false),
-                onDismissRequest = { shouldOpenDialog = false }
+                onDismissRequest = {
+                    viewModel.saveNote(note.copy(text = noteTextFieldValue.text))
+                    shouldOpenDialog = false
+                }
             ) {
                 (LocalView.current.parent as DialogWindowProvider)
                     .window
                     .setGravity(Gravity.BOTTOM)
 
-                val note by viewModel.note.collectAsStateWithLifecycle()
                 val keyboard = LocalSoftwareKeyboardController.current
                 val focusRequester = remember { FocusRequester() }
-
-                var noteTextFieldValue by remember { mutableStateOf(TextFieldValue()) }
 
                 LaunchedEffect(note) {
                     noteTextFieldValue = TextFieldValue(
@@ -125,7 +131,7 @@ internal class EditFragment : ComposeDaggerFragment() {
 
         private const val NOTE_ID_KEY = "noteId"
 
-        fun createArguments(noteId: Long): Bundle = Bundle()
-            .apply { putLong(NOTE_ID_KEY, noteId) }
+        fun createArguments(noteId: Long?): Bundle = Bundle()
+            .apply { noteId?.let { putLong(NOTE_ID_KEY, noteId) } }
     }
 }

@@ -28,9 +28,11 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.senex.notetaker.R
 import com.senex.notetaker.ui.edit.EditFragment
 import com.senex.notetaker.util.ComposeDaggerFragment
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 internal class NotesFragment : ComposeDaggerFragment() {
@@ -52,7 +54,11 @@ internal class NotesFragment : ComposeDaggerFragment() {
     @Composable
     fun Fab() {
         FloatingActionButton(
-            onClick = {}
+            onClick = {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    openEditFragment()
+                }
+            }
         ) {
             Icon(imageVector = Icons.Filled.Add, contentDescription = "")
         }
@@ -73,14 +79,7 @@ internal class NotesFragment : ComposeDaggerFragment() {
                             .fillMaxWidth()
                             .padding(bottom = 16.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .clickable {
-                                parentFragmentManager.commit {
-                                    add<EditFragment>(
-                                        containerViewId = R.id.container,
-                                        args = EditFragment.createArguments(noteItem.id)
-                                    )
-                                }
-                            },
+                            .clickable { openEditFragment(noteItem.id) },
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -92,13 +91,22 @@ internal class NotesFragment : ComposeDaggerFragment() {
                                     .padding(end = 8.dp)
                                     .align(Alignment.Top),
                                 onCheckedChange = {
-                                    viewModel.saveNote(noteItem.toModel().copy(isDone = it))
+                                    viewModel.updateNote(noteItem.toModel().copy(isDone = it))
                                 },
                             )
                             Text(text = noteItem.text)
                         }
                     }
                 }
+            )
+        }
+    }
+
+    private fun openEditFragment(noteId: Long? = null) {
+        parentFragmentManager.commit {
+            add<EditFragment>(
+                containerViewId = R.id.container,
+                args = EditFragment.createArguments(noteId)
             )
         }
     }

@@ -24,7 +24,7 @@ internal class BaseRepositoryImpl<
     override fun getAll(): Flow<List<OUT_MODEL>> =
         dao.getAll().map { list -> list.map { it.toModel() } }
 
-    override suspend fun insert(item: IN_MODEL) =
+    override suspend fun insert(item: IN_MODEL): Long =
         dao.insert(item.toEntity())
 
     override suspend fun insertAll(items: List<IN_MODEL>) =

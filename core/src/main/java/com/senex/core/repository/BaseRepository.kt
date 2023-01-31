@@ -8,7 +8,7 @@ interface BaseRepository<in T, out E> {
 
     fun getAll(): Flow<List<E>>
 
-    suspend fun insert(item: T)
+    suspend fun insert(item: T): Long
 
     suspend fun insertAll(items: List<T>)
 
