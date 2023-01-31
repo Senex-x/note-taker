@@ -6,9 +6,15 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-internal fun NoteTakerTheme(useDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+internal fun NoteTakerTheme(
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
+) {
+    rememberSystemUiController().setSystemBarsColor(Color.Transparent)
+
     MaterialTheme(
         content = content,
         colorScheme = if (useDarkTheme) darkColors else lightColors,
@@ -16,11 +22,14 @@ internal fun NoteTakerTheme(useDarkTheme: Boolean = isSystemInDarkTheme(), conte
 }
 
 private val darkColors = darkColorScheme(
-    primary = Red300,
+    primary = PrimaryOrange,
     onPrimary = Color.White,
-    secondary = Red300,
+    surface = GraySurface, // recycler
+    primaryContainer = PrimaryOrange, // fab
+    onPrimaryContainer = Color.White, // fab icon
+    secondary = PrimaryOrange,
     onSecondary = Color.White,
-    error = Red200,
+    error = PrimaryOrange,
 )
 
 private val lightColors = lightColorScheme(

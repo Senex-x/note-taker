@@ -69,7 +69,10 @@ internal class NotesFragment : ComposeDaggerFragment() {
 
         val notes by viewModel.notes.collectAsStateWithLifecycle()
 
-        LazyColumn(contentPadding = padding) {
+        LazyColumn(
+            contentPadding = padding,
+            modifier = Modifier.padding(16.dp)
+        ) {
             items(
                 items = notes,
                 itemContent = { noteItem ->
