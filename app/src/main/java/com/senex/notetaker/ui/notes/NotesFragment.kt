@@ -8,7 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,12 +40,30 @@ internal class NotesFragment : ComposeDaggerFragment() {
 
     private val viewModel: NotesViewModel by viewModels { factory }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+        Scaffold(
+            content = { padding -> NotesRecycler(padding) },
+            floatingActionButton = { Fab() }
+        )
+    }
+
+    @Composable
+    fun Fab() {
+        FloatingActionButton(
+            onClick = {}
+        ) {
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "")
+        }
+    }
+
+    @Composable
+    fun NotesRecycler(padding: PaddingValues) {
 
         val notes by viewModel.notes.collectAsStateWithLifecycle()
 
-        LazyColumn(contentPadding = PaddingValues(all = 16.dp)) {
+        LazyColumn(contentPadding = padding) {
             items(
                 items = notes,
                 itemContent = { noteItem ->

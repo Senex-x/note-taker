@@ -40,12 +40,12 @@ import javax.inject.Inject
 
 internal class EditFragment : ComposeDaggerFragment() {
 
-    @Inject
-    lateinit var factory: EditViewModel.Factory
+    private val viewModel: EditViewModel by assistedViewModel { factory.create(noteId) }
 
     private val noteId: Long by lazy { requireNotNull(arguments).getLong(NOTE_ID_KEY) }
 
-    private val viewModel: EditViewModel by assistedViewModel { factory.create(noteId) }
+    @Inject
+    lateinit var factory: EditViewModel.Factory
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
@@ -62,9 +62,9 @@ internal class EditFragment : ComposeDaggerFragment() {
                     .window
                     .setGravity(Gravity.BOTTOM)
 
+                val note by viewModel.note.collectAsStateWithLifecycle()
                 val keyboard = LocalSoftwareKeyboardController.current
                 val focusRequester = remember { FocusRequester() }
-                val note by viewModel.note.collectAsStateWithLifecycle()
 
                 var noteTextFieldValue by remember { mutableStateOf(TextFieldValue()) }
 
