@@ -19,4 +19,7 @@ internal interface NoteDao : BaseDao<NoteEntity, NoteEntity> {
 
     @Query("DELETE FROM notes")
     override suspend fun deleteAll()
+
+    @Query("SELECT * FROM notes ORDER BY isDone, id DESC")
+    fun getAllSorted(): Flow<List<NoteEntity>>
 }

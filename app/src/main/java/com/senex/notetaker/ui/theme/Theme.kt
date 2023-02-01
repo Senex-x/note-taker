@@ -24,9 +24,10 @@ internal fun NoteTakerTheme(
 private val darkColors = darkColorScheme(
     primary = PrimaryOrange,
     onPrimary = Color.White,
-    surface = GraySurface, // recycler
-    primaryContainer = PrimaryOrange, // fab
-    onPrimaryContainer = Color.White, // fab icon
+    surface = GraySurface,
+    primaryContainer = PrimaryOrange,
+    onPrimaryContainer = Color.White,
+    onSecondaryContainer = GrayOnSurface,
     secondary = PrimaryOrange,
     onSecondary = Color.White,
     error = PrimaryOrange,

@@ -11,9 +11,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -93,11 +96,19 @@ internal class NotesFragment : ComposeDaggerFragment() {
                                 modifier = Modifier
                                     .padding(end = 8.dp)
                                     .align(Alignment.Top),
+                                colors = CheckboxDefaults.colors(
+                                    uncheckedColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    checkedColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    checkmarkColor = MaterialTheme.colorScheme.background,
+                                ),
                                 onCheckedChange = {
                                     viewModel.updateNote(noteItem.toModel().copy(isDone = it))
                                 },
                             )
-                            Text(text = noteItem.text)
+                            Text(
+                                text = noteItem.text,
+                                color = if (noteItem.isDone) MaterialTheme.colorScheme.onSecondaryContainer else Color.Unspecified
+                            )
                         }
                     }
                 }

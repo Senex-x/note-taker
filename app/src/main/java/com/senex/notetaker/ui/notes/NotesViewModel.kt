@@ -3,7 +3,7 @@ package com.senex.notetaker.ui.notes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.senex.core.model.Note
-import com.senex.core.usecase.GetAllNotesUseCase
+import com.senex.core.usecase.GetAllNotesSortedUseCase
 import com.senex.core.usecase.UpdateNoteUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,11 +13,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 internal class NotesViewModel @Inject constructor(
-    getAllNotesUseCase: GetAllNotesUseCase,
+    getAllNotesSortedUseCase: GetAllNotesSortedUseCase,
     private val updateNoteUseCase: UpdateNoteUseCase,
 ) : ViewModel() {
 
-    val notes: StateFlow<List<NoteListItem>> = getAllNotesUseCase()
+    val notes: StateFlow<List<NoteListItem>> = getAllNotesSortedUseCase()
         .map { list -> list.map { NoteListItem.fromModel(it) } }
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
