@@ -1,5 +1,6 @@
 package com.senex.notetaker.ui.notes
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -67,6 +68,7 @@ internal class NotesFragment : ComposeDaggerFragment() {
         }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun NotesRecycler(padding: PaddingValues) {
 
@@ -84,8 +86,15 @@ internal class NotesFragment : ComposeDaggerFragment() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 16.dp)
+                            .animateItemPlacement()
                             .clip(RoundedCornerShape(16.dp))
-                            .clickable { openEditFragment(noteItem.id) },
+                            .clickable {
+                                if (noteItem.isDone.not()) {
+                                    openEditFragment(noteItem.id)
+                                } else {
+                                    viewModel.updateNote(noteItem.toModel().copy(isDone = false))
+                                }
+                            },
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,

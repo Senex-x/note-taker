@@ -27,5 +27,3 @@ internal class NotesViewModel @Inject constructor(
         }
     }
 }
-
-
